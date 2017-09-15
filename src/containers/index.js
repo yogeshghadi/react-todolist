@@ -25,6 +25,7 @@ class App extends Component {
 
     this.getValue = this.getValue.bind(this);
     this.addItem = this.addItem.bind(this);
+    this.removeItem = this.removeItem.bind(this);
 
   } // constructor
 
@@ -72,15 +73,31 @@ class App extends Component {
     updatedList.push(todoItem);
 
     this.setState({
-      todolist: updatedList
+      todolist: updatedList,
+      inputValue: ""
+    },
+    function(){
+      localStorage.setItem("todolist", JSON.stringify(this.state.todolist) );
     });
 
-    localStorage.setItem("todolist", JSON.stringify(this.state.todolist) );
   } 
 
-  removeItem(key) {
-    console.log('removeItem');
-    console.log(key);
+  removeItem(id) {
+    
+    let updatedList = this.state.todolist.filter(function(item, index){
+      return item.id !== id;
+    });
+
+    console.log('updatedList : ' + JSON.stringify(updatedList));
+
+    this.setState({
+      todolist: updatedList
+    },
+    function(){
+      localStorage.setItem("todolist", JSON.stringify(this.state.todolist) );
+    });
+
+    
   }
 
   toggleItem() {
@@ -103,7 +120,7 @@ class App extends Component {
         <div className="row todo-wrapper">
           <div className="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2">
             
-            <TodoInput placeholder="To do Task" btnLabel="Add" getValueHandler={this.getValue} addItemHandler={this.addItem} />
+            <TodoInput inputValue={this.state.inputValue} placeholder="To do Task" btnLabel="Add" getValueHandler={this.getValue} addItemHandler={this.addItem} />
 
             <div className="row todo-list">
               <ul className="col-xs-12">
