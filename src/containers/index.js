@@ -1,19 +1,98 @@
 // importing react library
 import React, { Component } from 'react';
 
-// importing images
-import logo from '../images/logo.svg';
-
 // importing styles
 import '../styles/index.css';
 
 // importing components
-import Button from '../components/Button';
-import InputText from '../components/InputText';
+import TodoInput from '../components/TodoInput';
 import Checkbox from '../components/Checkbox';
 
+// importing uniqid
+import uniqid from 'uniqid/index.js';
+
+//let listItems;
+
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      todolist: [],
+      inputValue: ""
+    };
+
+    this.getValue = this.getValue.bind(this);
+    this.addItem = this.addItem.bind(this);
+
+  } // constructor
+
+  componentDidMount() {
+    this.getList();
+  } // componentDidMount
+
+  getList() {
+
+    if(!localStorage.getItem("todolist")) {
+      localStorage.setItem("todolist", JSON.stringify(this.state.todolist) );
+    }
+    else {
+      this.setState({
+        todolist: JSON.parse(localStorage.getItem("todolist"))
+      });
+    }
+
+  } // getList
+
+
+  // update state with changed input value
+
+  getValue(e) {
+
+    this.setState({
+      inputValue: e.target.value
+    })
+
+  } // getValue
+
+  // todolist localstorage modifications
+
+  addItem() {
+    //console.log(this.state.inputValue);
+
+    let todoItem = {
+      key: uniqid('todo-'),
+      id: uniqid(),
+      label: this.state.inputValue,
+      completed: false
+    }
+
+    let updatedList = this.state.todolist;
+    updatedList.push(todoItem);
+
+    this.setState({
+      todolist: updatedList
+    });
+
+    localStorage.setItem("todolist", JSON.stringify(this.state.todolist) );
+  } 
+
+  removeItem(key) {
+    console.log('removeItem');
+    console.log(key);
+  }
+
+  toggleItem() {
+    console.log('toggleItem');
+  }
+
   render() {
+
+    const listItems = this.state.todolist.map( (item) => 
+      <Checkbox key={item.key} id={item.id} label={item.label} removeItem={this.removeItem} />
+    );
+
     return (
       <div className="app">
 
@@ -23,28 +102,22 @@ class App extends Component {
 
         <div className="row todo-wrapper">
           <div className="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2">
-            <div className="row todo-input">
-              <div className="col-sm-9 col-xs-8">
-                <InputText value="" placeholder="Todo Task" />  
-              </div>
-              <div className="col-sm-3 col-xs-4">
-                <Button label="Add" />
-              </div>
-            </div>
-         
+            
+            <TodoInput placeholder="To do Task" btnLabel="Add" getValueHandler={this.getValue} addItemHandler={this.addItem} />
+
             <div className="row todo-list">
               <ul className="col-xs-12">
-                <Checkbox id="abc" label="xyz" />
-                <Checkbox id="abc" label="xyz" />
-                <Checkbox id="abc" label="xyz" />
+                {listItems}
               </ul>
             </div>
+         
           </div>
         </div>
 
       </div>
     );
-  }
+  } // render
+
 }
 
 export default App;

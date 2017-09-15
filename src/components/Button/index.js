@@ -8,13 +8,5 @@ class Button extends Component {
 	 );
   }
 }
-/*
-const Button = ({btnName}) => {
-	return (
-	<div class="btn" role="button" aria-label="...">
-          <button type="button" className="btn btn-primary">{btnName}</button>
-    </div>
-)
-}*/
 
 export default Button;

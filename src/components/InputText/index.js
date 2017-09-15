@@ -5,7 +5,7 @@ class InputText extends Component {
   render(){
     
     return (
-      <input type="text" placeholder={this.props.placeholder} />  
+      <input type="text" placeholder={this.props.placeholder} onChange={this.props.onChangeHandler} inputValue={this.props.value}/>  
     );
 
   }
