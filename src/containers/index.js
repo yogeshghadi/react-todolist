@@ -60,26 +60,37 @@ class App extends Component {
 
   // todolist localstorage modifications
 
-  addItem() {
-    //console.log(this.state.inputValue);
+  addItem(e) {
+    
 
-    let todoItem = {
-      key: uniqid('todo-'),
-      id: uniqid(),
-      label: this.state.inputValue,
-      completed: false
+    if(!this.state.inputValue) {
+      return;
     }
+    else{
 
-    let updatedList = this.state.todolist;
-    updatedList.push(todoItem);
+      if(e.target.type === "text" && (e.which ? e.which : e.keyCode) !== 13){
+        return;
+      }
 
-    this.setState({
-      todolist: updatedList,
-      inputValue: ""
-    },
-    function(){
-      localStorage.setItem("todolist", JSON.stringify(this.state.todolist) );
-    });
+      let todoItem = {
+        key: uniqid('todo-'),
+        id: uniqid(),
+        label: this.state.inputValue,
+        completed: false
+      }
+
+      let updatedList = this.state.todolist;
+      updatedList.push(todoItem);
+
+      this.setState({
+        todolist: updatedList,
+        inputValue: ""
+      },
+      function(){
+        localStorage.setItem("todolist", JSON.stringify(this.state.todolist) );
+      });
+
+    }
 
   } 
 
