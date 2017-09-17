@@ -26,6 +26,7 @@ class App extends Component {
     this.getValue = this.getValue.bind(this);
     this.addItem = this.addItem.bind(this);
     this.removeItem = this.removeItem.bind(this);
+    this.getStatus = this.getStatus.bind(this);
 
   } // constructor
 
@@ -96,8 +97,32 @@ class App extends Component {
     function(){
       localStorage.setItem("todolist", JSON.stringify(this.state.todolist) );
     });
-
     
+  }
+
+  getStatus(e, id) {
+
+    let updatedList = this.state.todolist.map( (item) => {
+      if(item.id === id) {
+        if(e.target.checked){
+          item.completed = true;
+        }
+        else{
+          item.completed = false;
+        }
+      }
+
+      return item;
+    });
+
+    console.log('updatedList : ' + JSON.stringify(updatedList));
+
+    this.setState({
+      todolist: updatedList
+    },
+    function(){
+      localStorage.setItem("todolist", JSON.stringify(this.state.todolist) );
+    });
   }
 
   toggleItem() {
@@ -107,7 +132,8 @@ class App extends Component {
   render() {
 
     const listItems = this.state.todolist.map( (item) => 
-      <Checkbox key={item.key} id={item.id} label={item.label} removeItem={this.removeItem} />
+      <Checkbox key={item.key} id={item.id} label={item.label} checked={item.completed} removeItem={this.removeItem} getStatus={this.getStatus} />
+
     );
 
     return (

@@ -6,7 +6,7 @@ class TodoInput extends Component {
     return(
       <div className="row todo-input">
         <div className="col-sm-9 col-xs-8">
-          <input type="text" placeholder={this.props.placeholder} value={this.props.inputValue} onChange={this.props.getValueHandler}/>  
+          <input type="text" placeholder={this.props.placeholder} value={this.props.inputValue} onChange={this.props.getValueHandler} />  
         </div>
         <div className="col-sm-3 col-xs-4">
           <button type="button" className="btn btn-primary" onClick={this.props.addItemHandler}>{this.props.btnLabel}</button>

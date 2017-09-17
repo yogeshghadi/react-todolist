@@ -47,6 +47,8 @@ li.checkbox-item {
   border-top: 1px solid #eee;
   position: relative;
   padding: 5px 0;
+  font-size: 16px;
+  color: #333;
 }
 
 li.checkbox-item:first-child {
@@ -57,8 +59,9 @@ li.checkbox-item > input[type="checkbox"] {
   margin: 0 10px 0 0;
 }
 
-li.checkbox-item > label {
-  /*width: 80%;*/
+li.checkbox-item.checked > label {
+  text-decoration: line-through;
+  color: #999;
 }
 
 .delete-item {
