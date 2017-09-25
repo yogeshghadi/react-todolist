@@ -7,11 +7,13 @@ import '../styles/index.css';
 // importing components
 import TodoInput from '../components/TodoInput';
 import Checkbox from '../components/Checkbox';
+import Footer from '../components/Footer';
+
+import { withRouter } from 'react-router-dom';
 
 // importing uniqid
 import uniqid from 'uniqid/index.js';
 
-//let listItems;
 
 class App extends Component {
 
@@ -20,7 +22,10 @@ class App extends Component {
 
     this.state = {
       todolist: [],
-      inputValue: ""
+      todoCompleted: [],
+      todoActive: [],
+      inputValue: "",
+      hashLocation: ""
     };
 
     this.getValue = this.getValue.bind(this);
@@ -29,6 +34,25 @@ class App extends Component {
     this.getStatus = this.getStatus.bind(this);
 
   } // constructor
+
+  componentWillMount() {
+
+    this.props.history.listen((location, action) => {
+      
+      let hash = this.state.hashLocation;
+
+
+      if(hash !== location.hash) {
+        hash = location.hash;
+        this.setState({hashLocation : hash}, this.getList);
+      }
+      else {
+        return;
+      }
+
+    });
+
+  }
 
   componentDidMount() {
     this.getList();
@@ -45,8 +69,34 @@ class App extends Component {
       });
     }
 
+    this.getListActive();
+    this.getListCompleted();
+
   } // getList
 
+  getListActive() {
+
+    let updatedList = this.state.todolist.filter(function(item, index){
+      return item.completed === false
+    });
+
+    this.setState({
+      todoActive: updatedList
+    });
+
+  }
+
+  getListCompleted() {
+
+    let updatedList = this.state.todolist.filter(function(item, index){
+      return item.completed === true
+    });
+
+    this.setState({
+      todoCompleted: updatedList
+    });
+
+  }
 
   // update state with changed input value
 
@@ -62,7 +112,6 @@ class App extends Component {
 
   addItem(e) {
     
-
     if(!this.state.inputValue) {
       return;
     }
@@ -100,8 +149,6 @@ class App extends Component {
       return item.id !== id;
     });
 
-    console.log('updatedList : ' + JSON.stringify(updatedList));
-
     this.setState({
       todolist: updatedList
     },
@@ -114,6 +161,7 @@ class App extends Component {
   getStatus(e, id) {
 
     let updatedList = this.state.todolist.map( (item) => {
+
       if(item.id === id) {
         if(e.target.checked){
           item.completed = true;
@@ -124,9 +172,8 @@ class App extends Component {
       }
 
       return item;
-    });
 
-    console.log('updatedList : ' + JSON.stringify(updatedList));
+    });
 
     this.setState({
       todolist: updatedList
@@ -134,20 +181,30 @@ class App extends Component {
     function(){
       localStorage.setItem("todolist", JSON.stringify(this.state.todolist) );
     });
-  }
 
-  toggleItem() {
-    console.log('toggleItem');
   }
 
   render() {
 
-    const listItems = this.state.todolist.map( (item) => 
-      <Checkbox key={item.key} id={item.id} label={item.label} checked={item.completed} removeItem={this.removeItem} getStatus={this.getStatus} />
+    let listItems;
+    let list;
 
+    if( this.state.hashLocation === '#active' ) {
+      list = this.state.todoActive;
+    }
+    else if ( this.state.hashLocation === '#completed' ) {
+      list = this.state.todoCompleted;
+    }
+    else {
+      list = this.state.todolist;
+    }
+
+    listItems = list.map( (item) => 
+      <Checkbox key={item.key} id={item.id} label={item.label} checked={item.completed} removeItem={this.removeItem} getStatus={this.getStatus} />
     );
 
     return (
+      
       <div className="app">
 
         <div className="header">
@@ -164,14 +221,18 @@ class App extends Component {
                 {listItems}
               </ul>
             </div>
-         
+
+            <Footer />
+
+            
           </div>
         </div>
 
       </div>
+      
     );
   } // render
 
 }
 
-export default App;
+export default withRouter(App);
