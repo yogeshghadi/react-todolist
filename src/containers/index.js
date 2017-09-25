@@ -180,13 +180,15 @@ class App extends Component {
     },
     function(){
       localStorage.setItem("todolist", JSON.stringify(this.state.todolist) );
+      
+      this.getListActive();
+      this.getListCompleted();
     });
 
   }
 
-  render() {
+  checkLocation() {
 
-    let listItems;
     let list;
 
     if( this.state.hashLocation === '#active' ) {
@@ -198,6 +200,19 @@ class App extends Component {
     else {
       list = this.state.todolist;
     }
+
+    return list;
+  }
+
+  render() {
+
+    let listItems;
+    let list;
+
+
+    list = this.checkLocation();
+
+    
 
     listItems = list.map( (item) => 
       <Checkbox key={item.key} id={item.id} label={item.label} checked={item.completed} removeItem={this.removeItem} getStatus={this.getStatus} />
