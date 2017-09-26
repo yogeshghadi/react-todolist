@@ -154,6 +154,9 @@ class App extends Component {
     },
     function(){
       localStorage.setItem("todolist", JSON.stringify(this.state.todolist) );
+
+      this.getListActive();
+      this.getListCompleted();      
     });
     
   }
@@ -180,7 +183,7 @@ class App extends Component {
     },
     function(){
       localStorage.setItem("todolist", JSON.stringify(this.state.todolist) );
-      
+
       this.getListActive();
       this.getListCompleted();
     });

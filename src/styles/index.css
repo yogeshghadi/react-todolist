@@ -65,11 +65,12 @@ li.checkbox-item:first-child {
 }
 
 li.checkbox-item > input[type="checkbox"] {
-  margin: 0 10px 0 0;
+  margin: 5px 0 0 0;
 }
 
 li.checkbox-item > label {
   margin-bottom: 0;
+  padding: 0 15px 0 5px;
 }
 
 li.checkbox-item.checked > label {
@@ -80,7 +81,7 @@ li.checkbox-item.checked > label {
 .delete-item {
   position: absolute;
   right: 0;
-  top: 30%;
+  top: 5px;
   color: #666;
   cursor: pointer;
   text-decoration: none;
@@ -90,6 +91,18 @@ li.checkbox-item.checked > label {
 .delete-item:active {
   text-decoration: none;
   color: #ff0000;
+}
+
+.filters > a {
+  margin: 0 5px;
+}
+
+.todo-footer {
+  padding: 10px;
+}
+
+.clear-link {
+  text-align: right;
 }
 
 // media query

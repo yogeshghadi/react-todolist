@@ -23,9 +23,9 @@ class Checkbox extends Component {
   render() {
 
     return (
-      <li className={"checkbox-item" + (this.props.checked ? " checked" : "") }>
-        <input checked={this.props.checked} type="checkbox" id={this.props.id} onChange={this.getStatusHandler} />
-        <label htmlFor={this.props.id}>{this.props.label}</label>
+      <li className={"checkbox-item row" + (this.props.checked ? " checked" : "") }>
+        <input className="col-xs-1"  checked={this.props.checked} type="checkbox" id={this.props.id} onChange={this.getStatusHandler} />
+        <label className="col-xs-11" htmlFor={this.props.id}>{this.props.label}</label>
         <span className="delete-item" onClick={this.removeItemHandler}>X</span>
       </li>
       );
