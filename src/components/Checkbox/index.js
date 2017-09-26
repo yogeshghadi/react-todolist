@@ -4,7 +4,6 @@ class Checkbox extends Component {
 
   constructor(props) {
     super(props);
-    //this.state = {};
 
     // This binding is necessary to make `this` work in the callback
     this.removeItemHandler = this.removeItemHandler.bind(this);
@@ -30,7 +29,6 @@ class Checkbox extends Component {
       </li>
       );
   }
-
 
 }
 

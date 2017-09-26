@@ -95,6 +95,20 @@ li.checkbox-item.checked > label {
 
 .filters > a {
   margin: 0 5px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.filters > a:hover,
+.filters > a:focus
+{
+  color: #337ab7;
+  text-decoration: none;
+}
+
+.filters > a.selected {
+  background-color: #eee;
+  font-weight: bold;
 }
 
 .todo-footer {

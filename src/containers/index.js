@@ -41,10 +41,17 @@ class App extends Component {
       
       let hash = this.state.hashLocation;
 
-
       if(hash !== location.hash) {
+
         hash = location.hash;
-        this.setState({hashLocation : hash}, this.getList);
+
+        this.setState({
+          hashLocation : hash
+        }, 
+        function(){
+          this.getList();
+        });
+
       }
       else {
         return;
@@ -52,7 +59,7 @@ class App extends Component {
 
     });
 
-  }
+  } // componentWillMount
 
   componentDidMount() {
     this.getList();
@@ -66,11 +73,12 @@ class App extends Component {
     else {
       this.setState({
         todolist: JSON.parse(localStorage.getItem("todolist"))
+      },
+      function() {
+        this.getListActive();
+        this.getListCompleted();
       });
     }
-
-    this.getListActive();
-    this.getListCompleted();
 
   } // getList
 
@@ -84,7 +92,7 @@ class App extends Component {
       todoActive: updatedList
     });
 
-  }
+  } // getListActive
 
   getListCompleted() {
 
@@ -96,11 +104,13 @@ class App extends Component {
       todoCompleted: updatedList
     });
 
-  }
+  } // getListCompleted
 
   // update state with changed input value
 
   getValue(e) {
+
+    e.preventDefault();
 
     this.setState({
       inputValue: e.target.value
@@ -136,12 +146,16 @@ class App extends Component {
         inputValue: ""
       },
       function(){
-        localStorage.setItem("todolist", JSON.stringify(this.state.todolist) );
+        localStorage.setItem( "todolist", JSON.stringify(this.state.todolist) );
+        window.location.hash = '';
+        
+        this.getListActive();
+        this.getListCompleted();
       });
 
     }
 
-  } 
+  } // addItem
 
   removeItem(id) {
     
@@ -159,7 +173,7 @@ class App extends Component {
       this.getListCompleted();      
     });
     
-  }
+  } // removeItem
 
   getStatus(e, id) {
 
@@ -188,34 +202,35 @@ class App extends Component {
       this.getListCompleted();
     });
 
-  }
+  } // getStatus
 
   checkLocation() {
 
     let list;
+    let nowShowing = 'all';
 
     if( this.state.hashLocation === '#active' ) {
       list = this.state.todoActive;
+      nowShowing = 'active';
     }
     else if ( this.state.hashLocation === '#completed' ) {
       list = this.state.todoCompleted;
+      nowShowing = 'completed';
     }
     else {
       list = this.state.todolist;
+      nowShowing = 'all';
     }
 
-    return list;
-  }
+    return [list, nowShowing];
+
+  } // checkLocation
 
   render() {
 
-    let listItems;
-    let list;
+    let list, listItems, nowShowing;
 
-
-    list = this.checkLocation();
-
-    
+    [list, nowShowing] = this.checkLocation();
 
     listItems = list.map( (item) => 
       <Checkbox key={item.key} id={item.id} label={item.label} checked={item.completed} removeItem={this.removeItem} getStatus={this.getStatus} />
@@ -230,6 +245,7 @@ class App extends Component {
         </div>
 
         <div className="row todo-wrapper">
+          
           <div className="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2">
             
             <TodoInput inputValue={this.state.inputValue} placeholder="To do Task" btnLabel="Add" getValueHandler={this.getValue} addItemHandler={this.addItem} />
@@ -240,10 +256,10 @@ class App extends Component {
               </ul>
             </div>
 
-            <Footer />
-
+            <Footer activeNumber={this.state.todoActive.length} nowShowing={nowShowing}/>
             
           </div>
+
         </div>
 
       </div>
