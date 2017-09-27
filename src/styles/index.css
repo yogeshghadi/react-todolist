@@ -87,10 +87,14 @@ li.checkbox-item.checked > label {
   text-decoration: none;
 }
 
+li.checked > .delete-item {
+  color: #c72522;
+}
+
 .delete-item:hover,
 .delete-item:active {
   text-decoration: none;
-  color: #ff0000;
+  color: #c72522;
 }
 
 .filters > a {
