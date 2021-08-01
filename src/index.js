@@ -14,9 +14,8 @@ const onChangeHandler = () => {
 }
 
 ReactDOM.render(
-    <Router>
-      <Route path="/" component={App} onChange={onChangeHandler} >
-      </Route>
-    </Router>
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
   , document.getElementById('root'));
 //registerServiceWorker();
